@@ -8,6 +8,6 @@ export const createInteraction = async (interaction) => {
 
 export const findInteractions  = async () => {
  const response = await axios.get(LOG_API);
- const tuits = response.data;
- return tuits;
+ const interactions = response.data;
+ return interactions;
 }
