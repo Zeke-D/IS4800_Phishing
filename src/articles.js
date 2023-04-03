@@ -8,6 +8,7 @@ export default [
   },
   {
     "id": "1",
+      "link": "https://newshc1.herokuapp.com/",
     "image": "https://images.pexels.com/photos/315938/pexels-photo-315938.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     "body": "In recent years, the popularity of electric cars has grown rapidly. As concerns about climate change and air pollution have increased, many people have turned to electric vehicles as a more sustainable alternative to traditional gasoline-powered cars. However, while electric cars offer many benefits, they also present some challenges. For example, the range of an electric car is typically shorter than that of a gas-powered car, and charging stations can be harder to find. Despite these challenges, the growth of the electric car market shows no signs of slowing down.",
     "headline": "The Pros and Cons of Electric Cars",
@@ -29,6 +30,7 @@ export default [
   },
   {
     "id": "4",
+    "link": "https://newshc1.herokuapp.com/",
     "image": "https://images.pexels.com/photos/2908175/pexels-photo-2908175.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     "body": "In recent years, mindfulness meditation has become increasingly popular as a way to reduce stress and improve mental health. Studies have shown that mindfulness meditation can help reduce symptoms of anxiety and depression, and can also improve focus and concentration. While mindfulness meditation has its roots in Buddhism, it has been adapted and secularized for use in a variety of settings, from schools to workplaces to healthcare settings.",
     "headline": "The Benefits of Mindfulness Meditation for Mental Health",
