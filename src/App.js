@@ -57,7 +57,7 @@ function Article(props) {
 
   let clickHandler = _ => {
     let didProceedOnV3 = version === "v3" && !isRelative && 
-      window.confirm("This is an external link. Click  to proceed or Cancel to go back.")
+      window.confirm(`This is an external link. Click [ Ok ] to proceed or [ Cancel ] to go back.`)
 
     if (!props.fullscreen && (version !== "v3" || didProceedOnV3)) {
       navWithClickLog(nav, link);
