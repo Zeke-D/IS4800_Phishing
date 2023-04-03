@@ -1,19 +1,44 @@
 import './App.css';
 import { useState } from "react";
 import { BrowserRouter, Routes, Route, useNavigate, useParams } from "react-router-dom";
+import { createUser } from "./services/users-service";
+import { createInteraction } from "./services/logs-service";
 
+function navWithClickLog(nav, path, data={}) {
+
+  // log interaction
+  let interaction = {
+    username: window.localStorage.getItem('user'),
+    link: path,
+    data: JSON.stringify(data)
+  }
+
+  createInteraction(interaction)
+    .then(_ => nav(path))
+    .catch(e => console.log(e))
+
+}
 
 function Article(props) {
 
+  let linkStyles = {
+    
+  }
+
+  let nav = useNavigate()
   let { version, articleId } = useParams();
   let article = props.article ?? articles[articleId]
   console.log(version, articleId, article)
   let link = props.link ?? `/${version}/${article.id}`
-  let nav = useNavigate()
+
+  let clickHandler = _ => {
+    if (!props.fullscreen) navWithClickLog(nav, link);
+  }
+
 
   return (
-    <article onClick={() => {if (!props.fullscreen) { window.location = link;} return null}}>
-      { props.fullscreen && <button onClick={() => nav(`/${version}/`) }>Back to Home</button>}
+    <article onClick={clickHandler}>
+      { props.fullscreen && <button onClick={() => navWithClickLog(nav, `/${version}/`) }>Back to Home</button>}
       <div className='profpic'></div>
       <span>Posted by {article.user}</span>
       <p>{article.body}</p>
@@ -25,7 +50,7 @@ function Article(props) {
 
 function Login(props) {
 
-  let nav = useNavigate()
+  let nav = useNavigate();
   let [success, setSucc] = useState(true);
   let [pass, setPass] = useState("");
 
@@ -72,12 +97,12 @@ function Login(props) {
     <main style={style.main}>
     <h1>{ success ? "Log In" : "Please check login info."}</h1>
     <div style={style.inputBlock}>
-    <label style={style.label} htmlFor="user">Username</label>
-    <input style={style.input} name="user" onChange={e => props.setUser(e.target.value)} type="text" placeholder="ex: user01929"/>
+      <label style={style.label} htmlFor="user">Username</label>
+      <input style={style.input} name="user" onChange={e => props.setUser(e.target.value)} type="text" placeholder="ex: user01929"/>
     </div>
     <div style={style.inputBlock}>
-    <label style={style.label} htmlFor="pass">Password</label>
-    <input style={style.input} name="pass" onChange={e => setPass(e.target.value)} type="password"/>
+      <label style={style.label} htmlFor="pass">Password</label>
+      <input style={style.input} name="pass" onChange={e => setPass(e.target.value)} type="password"/>
     </div>
     <button type="submit" style={style.button} onClick={_ => {
       let path = pwLookup[pass]
@@ -86,8 +111,12 @@ function Login(props) {
         setSucc(false);
         return 
       }
+
+      window.localStorage.setItem('user', props.user)
       
-      nav(`/${path}`)
+      createUser( { username: props.user, version: pwLookup[pass] } )
+        .then(navWithClickLog(nav, `/${path}`))
+        .catch(e => console.log(e))
 
     }}>Login</button>
   </main>
@@ -97,7 +126,7 @@ function Login(props) {
 let article = {
   id: 0,
   user: "user1",
-  // link: "http://www.google.com",
+  link: "http://www.google.com",
   postTime: new Date(),
   image: "",
   body: `This is a really neat little site I found. This is a brief description of it, 
@@ -113,27 +142,33 @@ for (let ind in articles) {
 }
 
 
-let Feed = props => (
+let Feed = props => {
+
+  let user = window.localStorage.getItem('user')
+  
+  return (
     <div>
       <link rel="stylesheet" href='style.css'></link>
       <main>
-        <h1>Welcome, {props.user}</h1>
+        <h1>Welcome, {user}</h1>
         { props.articles.map(article => <Article key={article.id} article={article}/>) }
       </main>
     </div>
-)
+  )
+}
 
 function App() {
   let [user, setUser] = useState("")
+  let login = <Login setUser={setUser} user={user}/>
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route exact path='/' element={<Login/>}/>
-        <Route exact path='/login' element={<Login/>}/>
-        <Route exact path='/:version/' element={<Feed articles={articles}/>}/>
-        <Route exact path='/:version/:articleId' element={<Article fullscreen/>}/>
-      </Routes>
-    </BrowserRouter>
+      <BrowserRouter>
+        <Routes>
+          <Route exact path='/' element={login}/>
+          <Route exact path='/login' element={login}/>
+          <Route exact path='/:version/' element={<Feed articles={articles}/>}/>
+          <Route exact path='/:version/:articleId' element={<Article fullscreen/>}/>
+        </Routes>
+      </BrowserRouter>
   );
 }
 
