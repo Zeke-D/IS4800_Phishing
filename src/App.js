@@ -2,6 +2,7 @@ import './App.css';
 import { useState } from "react";
 import { BrowserRouter, Routes, Route, useNavigate, useParams } from "react-router-dom";
 import { createUser } from "./services/users-service"; import { createInteraction } from "./services/logs-service";
+import initArticles from './articles';
 
 function navWithClickLog(nav, path, data={}) {
 
@@ -64,7 +65,17 @@ function Article(props) {
 
   }
 
-  let [ isHovering, setHover] = useState(false);
+  let [isHovering, setHover] = useState(false);
+  
+    let profPicLookup = {
+    "0": "https://images.pexels.com/photos/5682847/pexels-photo-5682847.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+    "1": "https://images.pexels.com/photos/3586091/pexels-photo-3586091.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+    "2": "https://images.pexels.com/photos/4946515/pexels-photo-4946515.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+    "3": "https://images.pexels.com/photos/5378700/pexels-photo-5378700.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+    "4": "https://images.pexels.com/photos/5876695/pexels-photo-5876695.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+    "5": "https://images.pexels.com/photos/8090137/pexels-photo-8090137.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+    "6": "https://images.pexels.com/photos/5615665/pexels-photo-5615665.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+  }
 
   return (
     <article 
@@ -169,25 +180,8 @@ function Login(props) {
   )
 }
 
-let article = {
-  id: 0,
-  user: "user1",
-  link: "http://www.google.com",
-  postTime: new Date(),
-  image: "",
-  body: `This is a really neat little site I found. This is a brief description of it, 
-      and I thought you might like to check it out. In fact, here is another link 
-      to check out while you're at it:
-  `,
-  headline: "Headline",
-}
-
-let articles = [ article, Object.assign({}, article), Object.assign ({}, article)]
-for (let ind in articles) {
-  articles[ind].id = ind
-  // articles[ind].link = Math.random() > .3 ? "/v1/0" : articles[ind].link
-}
-
+let articles = initArticles
+articles.sort(() => Math.random() - 0.5);
 
 let Feed = props => {
 
