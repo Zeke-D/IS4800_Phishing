@@ -13,7 +13,7 @@ function Article(props) {
 
   return (
     <article onClick={() => {if (!props.fullscreen) { window.location = link;} return null}}>
-      { props.fullscreen && <button onClick={() => nav(`/${version}/`, {replace: true, state: false}) }>Back to Home</button>}
+      { props.fullscreen && <button onClick={() => nav(`/${version}/`) }>Back to Home</button>}
       <div className='profpic'></div>
       <span>Posted by {article.user}</span>
       <p>{article.body}</p>
@@ -27,8 +27,39 @@ function Login(props) {
 
   let nav = useNavigate()
   let [success, setSucc] = useState(true);
-  let [user, setUser] = useState("");
   let [pass, setPass] = useState("");
+
+  let style = {
+    label: {
+      display: "block",
+      fontSize: ".75rem",
+      marginBottom: "4pt"
+    },
+    inputBlock: {
+      width: "100%",
+    },
+    input: {
+      width: "100%",
+      padding: "10pt 4pt",
+      borderRadius: "5pt",
+      border: 'none',
+    },
+    main: {
+      color: "white",
+      padding: "20pt",
+      border: "1px solid gray",
+      borderRadius: "10pt"
+    },
+    button: {
+      width: "100%",
+      padding: "15pt",
+      backgroundColor: "rgb(100, 200, 230)",
+      border: "none",
+      color: "white",
+      cursor: "pointer",
+      borderRadius: "5pt",
+    }
+  }
   
   let pwLookup = {
     "abc123": "v1",
@@ -38,13 +69,17 @@ function Login(props) {
   }
 
   return (
-    <div>
-    { !success && <h1>Please check login info.</h1>}
-    <label htmlFor="user">Username</label>
-    <input name="user" onChange={e => setUser(e.target.value)} type="text" placeholder="ex: user01929"/>
-    <label htmlFor="pass">Password</label>
-    <input name="pass" onChange={e => setPass(e.target.value)} type="password"/>
-    <button type="submit" onClick={_ => {
+    <main style={style.main}>
+    <h1>{ success ? "Log In" : "Please check login info."}</h1>
+    <div style={style.inputBlock}>
+    <label style={style.label} htmlFor="user">Username</label>
+    <input style={style.input} name="user" onChange={e => props.setUser(e.target.value)} type="text" placeholder="ex: user01929"/>
+    </div>
+    <div style={style.inputBlock}>
+    <label style={style.label} htmlFor="pass">Password</label>
+    <input style={style.input} name="pass" onChange={e => setPass(e.target.value)} type="password"/>
+    </div>
+    <button type="submit" style={style.button} onClick={_ => {
       let path = pwLookup[pass]
 
       if (!path) {
@@ -55,7 +90,7 @@ function Login(props) {
       nav(`/${path}`)
 
     }}>Login</button>
-  </div>
+  </main>
   )
 }
 
@@ -80,15 +115,16 @@ for (let ind in articles) {
 
 let Feed = props => (
     <div>
-      <h1>{props.version}</h1>
       <link rel="stylesheet" href='style.css'></link>
       <main>
+        <h1>Welcome, {props.user}</h1>
         { props.articles.map(article => <Article key={article.id} article={article}/>) }
       </main>
     </div>
 )
 
 function App() {
+  let [user, setUser] = useState("")
   return (
     <BrowserRouter>
       <Routes>
