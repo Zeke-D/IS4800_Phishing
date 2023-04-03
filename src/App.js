@@ -1,8 +1,7 @@
 import './App.css';
 import { useState } from "react";
 import { BrowserRouter, Routes, Route, useNavigate, useParams } from "react-router-dom";
-import { createUser } from "./services/users-service";
-import { createInteraction } from "./services/logs-service";
+import { createUser } from "./services/users-service"; import { createInteraction } from "./services/logs-service";
 
 function navWithClickLog(nav, path, data={}) {
 
@@ -14,7 +13,10 @@ function navWithClickLog(nav, path, data={}) {
   }
 
   createInteraction(interaction)
-    .then(_ => nav(path))
+    .then(_ => {
+      if (path[0] === "/") nav(path)
+      else window.location.href = path
+    })
     .catch(e => console.log(e))
 
 }
@@ -22,28 +24,72 @@ function navWithClickLog(nav, path, data={}) {
 function Article(props) {
 
   let linkStyles = {
-    
+    // default
+    "v0": {  },
+
+    // display external links
+    "v1": {
+      "internal": { display: "none" },
+      "external": { }
+    },
+
+    // tooltip
+    "v2": {
+      "internal": { },
+      "external": { }
+    },
+
+    // stops interaction
+    "v3": {
+      
+    }
   }
 
   let nav = useNavigate()
   let { version, articleId } = useParams();
   let article = props.article ?? articles[articleId]
-  console.log(version, articleId, article)
-  let link = props.link ?? `/${version}/${article.id}`
+  let link = article.link ?? `/${version}/${article.id}`
+
+  let isRelative = link[0] === "/"
+  let linkType = isRelative ? "internal" : "external";
+  let linkStyle = linkStyles[version][linkType]
 
   let clickHandler = _ => {
-    if (!props.fullscreen) navWithClickLog(nav, link);
+    let didProceedOnV3 = version === "v3" && !isRelative && 
+      window.confirm("This is an external link. Click  to proceed or Cancel to go back.")
+
+    if (!props.fullscreen && (version !== "v3" || didProceedOnV3)) {
+      navWithClickLog(nav, link);
+    }
+
   }
 
+  let [ isHovering, setHover] = useState(false);
 
   return (
-    <article onClick={clickHandler}>
-      { props.fullscreen && <button onClick={() => navWithClickLog(nav, `/${version}/`) }>Back to Home</button>}
+    <article 
+      onClick={clickHandler} 
+      onMouseEnter={_ => setHover(true)} 
+      onMouseLeave={_ => setHover(false)} 
+    >
+      { 
+      version === "v2" && isHovering && !isRelative &&
+      <div data-tooltip-text="This is an external site." className={"tooltip"}></div>
+      }
+      { 
+      props.fullscreen && 
+      <button onClick={() => navWithClickLog(nav, `/${version}/`) }>Back to Home</button>
+      }
       <div className='profpic'></div>
       <span>Posted by {article.user}</span>
       <p>{article.body}</p>
       <h1>{article.headline}</h1>
+      { 
+      version === "v1" && 
+      <span className={"link"} style={linkStyle}>{isRelative ? "" : link }</span> 
+      }
     </article>
+
   );
   
 }
@@ -139,6 +185,7 @@ let article = {
 let articles = [ article, Object.assign({}, article), Object.assign ({}, article)]
 for (let ind in articles) {
   articles[ind].id = ind
+  // articles[ind].link = Math.random() > .3 ? "/v1/0" : articles[ind].link
 }
 
 

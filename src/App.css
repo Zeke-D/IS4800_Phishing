@@ -10,6 +10,7 @@ body {
   background: #334;
   display: grid;
   place-items: center;
+  color: white;
 }
 
 main {
@@ -30,7 +31,7 @@ main article:hover {
 }
 
 main article:hover::after {
-  filter: brightness(.7);
+  filter: brightness(.5);
 }
 
 main article {
@@ -49,11 +50,34 @@ main article {
   grid-template-areas: 
     "profpic username menu"
     "content content content"
-    "title title title";
+    "title title title"
+    "link link link";
   grid-template-columns: 40pt auto 60pt;
-  grid-template-rows: 40pt auto min-content;
+  grid-template-rows: 40pt auto min-content min-content;
   color: #eef;
   font-family: "Adobe Caslon Pro", serif;
+}
+
+main article span.link {
+  grid-area: link;
+}
+
+main article .tooltip {
+  position: absolute;
+  bottom: 20pt;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: max-content;
+  height: min-content;
+  background-color: rgba(180, 130, 10, .7);
+  padding: 20px 40px;
+  border-radius: 5pt;
+  background-filter: blur(40px);
+}
+
+main article .tooltip::before {
+  content: attr(data-tooltip-text);
 }
 
 main article > {
