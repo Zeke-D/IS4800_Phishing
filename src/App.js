@@ -92,6 +92,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route exact path='/' element={<Login/>}/>
         <Route exact path='/login' element={<Login/>}/>
         <Route exact path='/:version/' element={<Feed articles={articles}/>}/>
         <Route exact path='/:version/:articleId' element={<Article fullscreen/>}/>
