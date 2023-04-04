@@ -164,10 +164,10 @@ function Login(props) {
   }
   
   let pwLookup = {
-    "abc123": "v1",
-    "catdog": "v2",
-    "thanks": "v3",
-    "goodie": "v4",
+    "abc123": "v0",
+    "catdog": "v1",
+    "thanks": "v2",
+    "goodie": "v3",
   }
 
   return (
