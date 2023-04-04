@@ -48,7 +48,7 @@ function Article(props) {
 
   let nav = useNavigate()
   let { version, articleId } = useParams();
-  let article = props.article ?? articles[articleId]
+  let article = props.article ?? articles.find(a => a.id == articleId)
   let link = article.link ?? `/${version}/${article.id}`
 
   let isRelative = link[0] === "/"
@@ -97,6 +97,7 @@ function Article(props) {
 
   return (
     <article 
+      className={props.fullscreen ? "fullscreen" : ""}
       style={fullStyleOverride}
       onClick={clickHandler} 
       onMouseEnter={_ => setHover(true)} 
@@ -200,7 +201,7 @@ function Login(props) {
 }
 
 let articles = initArticles
-// articles.sort(() => Math.random() - 0.5);
+articles.sort(_ => Math.random() - .5)
 
 let Feed = props => {
 

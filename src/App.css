@@ -29,10 +29,6 @@ main article:hover {
   background-color: rgba(0, 0, 0, .2);
 }
 
-main article:hover::after {
-  filter: brightness(.5);
-}
-
 main article {
   transition: .2s transform ease-in;
   transform-origin: center center;
@@ -87,21 +83,6 @@ main article > {
   z-index: 3;
 }
 
-main article::after {
-  position: absolute;
-  content: '';
-  display: block;
-  width: 100%;
-  height: 100%;
-  inset: 0;
-  background-size: cover;
-  filter: brightness(.4);
-  z-index: -1;
-  border-radius: inherit;
-  transition: .1s filter ease-in;
-}
-
-
 article .profpic {
   border-radius: 50%;
   border: 1px solid #667;
@@ -113,8 +94,26 @@ article span {
 }
 
 article p {
+  position: relative;
   grid-area: content;
   align-self: start;
+}
+
+article:not(.fullscreen) p {
+  max-height: 5rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  margin-bottom: 30pt;
+}
+
+article:not(.fullscreen)::after {
+  content: "Read more";
+  font-style: oblique;
+  position: absolute;
+  display: block;
+  bottom: 40pt;
+  left: 20pt;
 }
 
 article h1 {
