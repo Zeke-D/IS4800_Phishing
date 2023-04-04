@@ -56,9 +56,10 @@ function Article(props) {
   let linkStyle = linkStyles[version][linkType]
 
   let clickHandler = _ => {
-    let didProceedOnV3 = version === "v3" && !isRelative && 
-      window.confirm(`This is an external link. Click [ Ok ] to proceed or [ Cancel ] to go back.`)
+    let didProceedOnV3 = version === "v3" && (isRelative || (!isRelative && 
+      window.confirm(`This is an external link. Click [ Ok ] to proceed or [ Cancel ] to go back.`)))
 
+    console.log((version !== "v3" || didProceedOnV3))
     if (!props.fullscreen && (version !== "v3" || didProceedOnV3)) {
       navWithClickLog(nav, link);
     }
@@ -67,7 +68,8 @@ function Article(props) {
 
   let [isHovering, setHover] = useState(false);
   
-    let profPicLookup = {
+  /*
+  let profPicLookup = {
     "0": "https://images.pexels.com/photos/5682847/pexels-photo-5682847.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     "1": "https://images.pexels.com/photos/3586091/pexels-photo-3586091.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     "2": "https://images.pexels.com/photos/4946515/pexels-photo-4946515.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
@@ -76,9 +78,26 @@ function Article(props) {
     "5": "https://images.pexels.com/photos/8090137/pexels-photo-8090137.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     "6": "https://images.pexels.com/photos/5615665/pexels-photo-5615665.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
   }
+  */
+
+  let btn = {
+    border: "1px solid #79c",
+    color: "white",
+    background: "none",
+    padding: "10pt 20pt",
+    margin: "10pt 0 20pt 0",
+    borderRadius: "5pt",
+    cursor: "pointer",
+  }
+
+  let fullStyleOverride = props.fullscreen ? {
+      width: "min(60vw, 400pt)",
+      marginTop: "50pt",
+    } : {}
 
   return (
     <article 
+      style={fullStyleOverride}
       onClick={clickHandler} 
       onMouseEnter={_ => setHover(true)} 
       onMouseLeave={_ => setHover(false)} 
@@ -89,12 +108,12 @@ function Article(props) {
       }
       { 
       props.fullscreen && 
-      <button onClick={() => navWithClickLog(nav, `/${version}/`) }>Back to Home</button>
+      <button style={btn} onClick={() => navWithClickLog(nav, `/${version}/`) }>Back to Home</button>
       }
       <div className='profpic'></div>
+      <h1>{article.headline}</h1>
       <span>Posted by {article.user}</span>
       <p>{article.body}</p>
-      <h1>{article.headline}</h1>
       { 
       version === "v1" && 
       <span className={"link"} style={linkStyle}>{isRelative ? "" : link }</span> 
@@ -186,6 +205,7 @@ let articles = initArticles
 let Feed = props => {
 
   let user = window.localStorage.getItem('user')
+  console.log(props.articles)
   
   return (
     <div>

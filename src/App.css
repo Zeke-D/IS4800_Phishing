@@ -3,7 +3,6 @@
 }
 
 :root {
-  --sample-img: url("https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2");
 }
 
 body {
@@ -16,7 +15,6 @@ body {
 main {
   --num-cols: 1;
   --gap: 40pt;
-
   margin: var(--gap) 0;
   width: 40vw;
   display: grid;
@@ -28,6 +26,7 @@ main {
 
 main article:hover {
   transform: scale(1.02);
+  background-color: rgba(0, 0, 0, .2);
 }
 
 main article:hover::after {
@@ -48,14 +47,16 @@ main article {
   cursor: pointer;
   box-shadow: 0 3px 12px #333;
   grid-template-areas: 
-    "profpic username menu"
-    "content content content"
-    "title title title"
-    "link link link";
-  grid-template-columns: 40pt auto 60pt;
+    "profpic username"
+    "title title"
+    "content content"
+    "link link";
+  grid-template-columns: 40pt auto;
   grid-template-rows: 40pt auto min-content min-content;
   color: #eef;
   font-family: "Adobe Caslon Pro", serif;
+  border: 1px solid #79c;
+  transition: .2s all ease-in;
 }
 
 main article span.link {
@@ -66,14 +67,16 @@ main article .tooltip {
   position: absolute;
   bottom: 20pt;
   left: 50%;
-  top: 50%;
+  top: 90pt;
   transform: translate(-50%, -50%);
   width: max-content;
   height: min-content;
-  background-color: rgba(180, 130, 10, .7);
+  background-color: white;
+  box-shadow: black 0px 1px 20px;
+  color: black;
+  border: 2px solid black;
   padding: 20px 40px;
   border-radius: 5pt;
-  background-filter: blur(40px);
 }
 
 main article .tooltip::before {
@@ -91,7 +94,6 @@ main article::after {
   width: 100%;
   height: 100%;
   inset: 0;
-  background-image: var(--sample-img);
   background-size: cover;
   filter: brightness(.4);
   z-index: -1;
@@ -112,7 +114,7 @@ article span {
 
 article p {
   grid-area: content;
-  align-self: end;
+  align-self: start;
 }
 
 article h1 {
@@ -120,10 +122,11 @@ article h1 {
   color: #ace;
   text-transform: uppercase;
   font-family: "Avenir Book";
-  font-size: 3rem;
-  line-height: 2.4rem;
+  font-size: 2rem;
+  line-height: 2rem;
   margin: 0;
   padding: 0;
+  align-self: end;
 }
 
 a {
