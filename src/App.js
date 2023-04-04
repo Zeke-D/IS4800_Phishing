@@ -181,7 +181,7 @@ function Login(props) {
 }
 
 let articles = initArticles
-articles.sort(() => Math.random() - 0.5);
+// articles.sort(() => Math.random() - 0.5);
 
 let Feed = props => {
 
