@@ -1,5 +1,5 @@
 import axios from 'axios';
-const LOG_API = "https://phishing-backend-is4800.herokuapp.com/api/logs";
+const LOG_API = "https://is4800-services.herokuapp.com/api/logs";
 
 export const createInteraction = async (interaction) => {
  const response = await axios.post(LOG_API, interaction)
