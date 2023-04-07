@@ -210,7 +210,7 @@ let Feed = props => {
   
   return (
     <div>
-      <link rel="stylesheet" href='style.css'></link>
+      <link rel="stylesheet" type="text/css" href='style.css'></link>
       <main>
         <h1>Welcome, {user}</h1>
         { props.articles.map(article => <Article key={article.id} article={article}/>) }
