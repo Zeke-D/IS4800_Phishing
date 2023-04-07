@@ -7,9 +7,12 @@
 
 body {
   background: #334;
+  color: white;
+}
+
+#root {
   display: grid;
   place-items: center;
-  color: white;
 }
 
 main {
@@ -18,7 +21,7 @@ main {
   margin: var(--gap) 0;
   width: 40vw;
   display: grid;
-  grid-template-columns: repeat(var(--num-cols), 1fr);
+  grid-template-columns: 40vw;
   grid-gap: var(--gap);
   justify-items: center;
   align-items: start;

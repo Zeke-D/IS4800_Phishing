@@ -209,13 +209,10 @@ let Feed = props => {
   console.log(props.articles)
   
   return (
-    <div>
-      <link rel="stylesheet" type="text/css" href='style.css'></link>
-      <main>
-        <h1>Welcome, {user}</h1>
-        { props.articles.map(article => <Article key={article.id} article={article}/>) }
-      </main>
-    </div>
+    <main>
+      <h1>Welcome, {user}</h1>
+      { props.articles.map(article => <Article key={article.id} article={article}/>) }
+    </main>
   )
 }
 
